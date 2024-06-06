@@ -2,7 +2,7 @@ import ReactDOM from 'react-dom';
 import Dashboard from './Dashboard';
 import './Dashboard.css'; 
 
-function Modal ({onClose,children}) {
+const Modal =  ({onClose,children}) => {
     return(
         ReactDOM.createPortal(
             <div>
@@ -16,3 +16,4 @@ function Modal ({onClose,children}) {
 }
 
 export default Modal;
+
