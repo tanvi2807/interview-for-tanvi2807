@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-function NoLaunch () {
+function Loading () {
     return (
         <table class='table_body'>
       <thead>
@@ -19,7 +19,7 @@ function NoLaunch () {
                   <tr>
                     <td colSpan="7" rowSpan="12" className="no-Launch">
                       {/* <img src='C:\Users\tanvi\Downloads' alt='Loading'/> */}
-                     No Launch Found
+                      Loading...
                     </td>
                   </tr>
                 </tbody>
@@ -27,4 +27,4 @@ function NoLaunch () {
     );
 }
 
-export default NoLaunch;
+export default Loading;

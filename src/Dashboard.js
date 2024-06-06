@@ -4,7 +4,10 @@ import { CiFilter } from "react-icons/ci";
 import Modal from './Modal';
 import { GoCalendar } from "react-icons/go";
 
+import LaunchTable from './LaunchTable';
 import NoLaunch from './NoLaunch';
+import Loading from './Loading';
+import Pagination from './Pagination';
 
 // Component for displaying Modal
 const LaunchItem = ({ launch }) => {
@@ -40,95 +43,6 @@ const LaunchItem = ({ launch }) => {
 
     {showModal && modal }
     </div>
-  );
-};
-
-
-// Component for displaying the launch table
-const LaunchTable = ({ launches, loading , currentItems }) => {
-
-  const getStatusText = (status) => {
-    if (status === true) {
-      return 'Success';
-    } else if (status === null) {
-      return 'Upcoming';
-    } else if (status === false) {
-      return 'Failed';
-    } else {
-      return '';
-    }
-  };
-
-
-  //  For displaying Status
-  const getStatusColor = (status) => {
-    if (status === null) {
-      return '#FEF3C7';
-    } else if (status == true) {
-      return '#DEF7EC';
-    } else if (status === false) {
-      return '#FDE2E1';
-    } else {
-      return 'transparent';
-    }
-  };
-
-  const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    const date = new Date(dateString);
-    return date.toLocaleDateString(undefined, options);
-  };
-
-  const formatTime = (dateString) => {
-    const date = new Date(dateString);
-    const hours = date.getHours().toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
-    return `${hours}:${minutes}`;
-  };
-
-  
-
-  return (
-    <table class='table_body'>
-      <thead>
-        <tr>
-          <th>No</th>
-          <th>Launched</th>
-          <th>Location</th>
-          <th>Mission</th>
-          <th>Orbit</th>
-          <th>Launch Status</th>
-          <th>Rocket</th>
-        </tr>
-      </thead>
-      <tbody>
-         { loading ? (
-                 <tr>
-                  <td colSpan={7} rowSpan={12}>Loading...</td>
-                 </tr>
-         ) : (
-           launches.map((launch, index) => (
-            <tr key={launch.flight_number}>
-              <td>{index + 1}</td>
-              <td>{formatDate(launch.launch_date_utc)} at {formatTime(launch.launch_date_utc)}</td>
-              <td>{launch.launch_site.site_name}</td>
-              <td>{launch.mission_name}</td>
-              <td>{launch.rocket.second_stage.payloads[0].orbit}</td>
-              <td>
-                <div
-                  className="status-box"
-                  style={{ backgroundColor: getStatusColor(launch.launch_success) }}
-                >
-                   {getStatusText(launch.launch_success)}
-                </div>
-              </td>
-              <td>{launch.rocket.rocket_name}</td>
-            </tr>
-          ))
-         ) 
-        }
-      </tbody>
-    </table>
   );
 };
 
@@ -265,10 +179,12 @@ const Dashboard = () => {
            
             <div className='table-container'>
             
-            { currentItems.length > 0 ? (
+            { loading ? <Loading/> : 
+            ( currentItems.length > 0 ? (
               <LaunchTable launches={currentItems} loading={loading} /> ) : (
                 <NoLaunch/>
-                )}
+                )
+            )}
 
               <Pagination
                 currentPage={currentPage}
@@ -283,71 +199,5 @@ const Dashboard = () => {
   );
 };
 
-
-// Component for pagination
-const Pagination = ({ currentPage, totalPages, onPageChange }) => {
-  const handlePreviousClick = () => {
-    if (currentPage > 1) {
-      onPageChange(currentPage - 1);
-    }
-  };
-
-  const handleNextClick = () => {
-    if (currentPage < totalPages) {
-      onPageChange(currentPage + 1);
-    }
-  };
-
-  const handlePageClick = (pageNumber) => {
-    onPageChange(pageNumber);
-  };
-
-  const getPageNumbers = () => {
-    const pageNumbers = [];
-
-    if (totalPages <= 2) {
-      for (let i = 1; i <= totalPages; i++) {
-        pageNumbers.push(i);
-      }
-    } else {
-      pageNumbers.push(currentPage);
-
-      if (currentPage < totalPages - 1) {
-        pageNumbers.push(currentPage + 1);
-      }
-
-      if (currentPage < totalPages - 2) {
-        pageNumbers.push('...');
-      }
-
-      pageNumbers.push(totalPages);
-    }
-
-    return pageNumbers;
-  };
-
-  return (
-    <div className='pagi'>
-      <button onClick={handlePreviousClick} disabled={currentPage === 1}>
-      &#60;	 
-      </button>
-
-      {getPageNumbers().map((pageNumber, index) => (
-        <button
-          key={index}
-          onClick={() => handlePageClick(pageNumber)}
-          className={pageNumber === currentPage ? 'active' : ''
-          }
-        >
-          {pageNumber}
-        </button>
-      ))}
-
-      <button onClick={handleNextClick} disabled={currentPage === totalPages}>
-      &#62;	
-      </button>
-    </div>
-  );
-};
 export default Dashboard;
 
