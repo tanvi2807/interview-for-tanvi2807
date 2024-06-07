@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/interview-for-tanvi2807/static/css/main.f6d5383f.css",
+    "main.js": "/interview-for-tanvi2807/static/js/main.1b086f8c.js",
+    "index.html": "/interview-for-tanvi2807/index.html",
+    "main.f6d5383f.css.map": "/interview-for-tanvi2807/static/css/main.f6d5383f.css.map",
+    "main.1b086f8c.js.map": "/interview-for-tanvi2807/static/js/main.1b086f8c.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f6d5383f.css",
+    "static/js/main.1b086f8c.js"
+  ]
+}
